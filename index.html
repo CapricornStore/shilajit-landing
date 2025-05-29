@@ -54,6 +54,17 @@
             color: white;
             margin: 20px 0;
             border-radius: 10px;
+            position: relative;
+        }
+        
+        /* Imagen de respaldo en caso de problemas con la de fondo */
+        .product-image-backup {
+            display: none;
+            max-width: 300px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            border: 3px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .hero h1 {
@@ -245,6 +256,21 @@
                 margin: 15px auto;
                 max-width: 90%;
             }
+            
+            .product-image-backup {
+                display: block;
+            }
+        }
+        
+        /* Detectar problemas con la imagen de fondo */
+        @media (max-width: 480px), (prefers-reduced-data: reduce) {
+            .hero {
+                background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), none;
+            }
+            
+            .product-image-backup {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -255,6 +281,9 @@
         </header>
 
         <section class="hero">
+            <!-- Imagen de respaldo para dispositivos móviles o cuando falle la de fondo -->
+            <img src="https://i.ibb.co/7b6sHdG/shilajit.jpg" alt="Shilajit con INVIMA" class="product-image-backup">
+            
             <h1>SHILAJIT PURO CON CERTIFICACIÓN INVIMA</h1>
             <p>Energía ancestral del Himalaya | 100% natural</p>
             
@@ -337,7 +366,7 @@
             </div>
         </section>
         
-        <section class="hero" style="margin-top: 30px; padding: 30px 20px;">
+        <section class="hero" style="margin-top: 30px; padding: 30px 20px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://i.ibb.co/7b6sHdG/shilajit.jpg');">
             <h2>¿Listo para Experimentar la Diferencia?</h2>
             <p class="oferta">¡Oferta válida solo por tiempo limitado!</p>
             <a href="https://wa.me/573108288506?text=Quiero%20el%20Shilajit%20con%2015%25%20descuento" class="cta-button">
@@ -355,5 +384,33 @@
         <p>Bodega Elite Colombia © 2023 | Productos naturales certificados</p>
         <p>Teléfono: +57 310 828 8506 | Email: info@bodegaelitecolombia.com</p>
     </footer>
+    
+    <script>
+        // Verificar si la imagen de fondo se cargó correctamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const hero = document.querySelector('.hero');
+            const heroBackground = getComputedStyle(hero).backgroundImage;
+            
+            // Si no hay imagen de fondo o no se cargó
+            if (!heroBackground || heroBackground === 'none') {
+                const backupImage = document.createElement('img');
+                backupImage.src = 'https://i.ibb.co/7b6sHdG/shilajit.jpg';
+                backupImage.alt = 'Shilajit con INVIMA';
+                backupImage.style.maxWidth = '300px';
+                backupImage.style.margin = '0 auto 20px';
+                backupImage.style.borderRadius = '10px';
+                backupImage.style.border = '3px solid #d4af37';
+                backupImage.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                
+                // Insertar después del título
+                const heroTitle = document.querySelector('.hero h1');
+                heroTitle.parentNode.insertBefore(backupImage, heroTitle.nextSibling);
+                
+                // Mostrar en todos los dispositivos
+                backupImage.classList.add('product-image-backup');
+                backupImage.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
